@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>FuneralCatalog.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>LifeEventsTargetApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>2A3BE33814EEFE6A00A3BB88</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2A3BE35C14EEFE6B00A3BB88</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2AD7CFDA150E498200A23E7B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2AD7CFF9150E498300A23E7B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -7,17 +7,67 @@
 //
 
 #import "CatalogAppDelegate.h"
+#import "Product.h"
+#import "Category.h"
+#import "CatalogAdminPanelAddProductView.h"
+#import "CatalogAdminEditViewController.h"
+#import "CatalogIntroViewController.h"
 
 @implementation CatalogAppDelegate
 
 @synthesize window = _window;
+@synthesize dataArray;
+@synthesize filterArray;
+@synthesize fieldArray;
+@synthesize chosenProduct;
+@synthesize chosenCategory;
+@synthesize currentImage;
+@synthesize addProductView;
+@synthesize fieldType;
+@synthesize editViewController;
+@synthesize introViewController;
+@synthesize moviePath;
+@synthesize introDataArray;
+
+- (NSString*)saveFilePath
+{
+    NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    return [[path objectAtIndex:0] stringByAppendingPathComponent:@"savefile.plist"];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
-    UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
-    splitViewController.delegate = (id)navigationController.topViewController;
+    NSString *filePath = [self saveFilePath];
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+    if (fileExists)
+    {
+        NSData *codedData = [NSData dataWithContentsOfFile:filePath];
+        NSMutableArray *components = (NSMutableArray*)[NSKeyedUnarchiver unarchiveObjectWithData:codedData];
+        self.dataArray = [components objectAtIndex:0];
+        self.filterArray = [components objectAtIndex:1];
+        self.fieldArray = [components objectAtIndex:2];
+        self.introDataArray = [components objectAtIndex:3];
+        // Intro Data Array contains
+        // Video Link at 0, BL Image at 1, BC Image at 2, and BR Image at 3.
+        self.moviePath = [self.introDataArray objectAtIndex:0];
+    }
+    else
+    {
+        self.dataArray = [[NSMutableArray alloc] init];
+        self.filterArray = [[NSMutableArray alloc] init];
+        self.fieldArray = [[NSMutableArray alloc] init];
+        self.introDataArray = [[NSMutableArray alloc] init];
+        // Fill four indices with blank strings.
+        [self.introDataArray addObject:[NSNull null]];
+        [self.introDataArray addObject:[NSNull null]];
+        [self.introDataArray addObject:[NSNull null]];
+        [self.introDataArray addObject:[NSNull null]];
+        self.moviePath = [[NSString alloc] init];
+    }
+    self.currentImage = NULL;
+    self.addProductView = NULL;
+    self.fieldType = [[NSString alloc] init];
     return YES;
 }
 							
@@ -31,10 +81,10 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-     If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-     */
+    // Save data.  Index 0 contains all entered products, 1 contains all the products that meet the filter settings, and 2 contains all the categories.  3 contains all intro screen related data.
+    NSMutableArray *components = [[NSMutableArray alloc] initWithObjects:self.dataArray, self.filterArray, self.fieldArray, self.introDataArray, nil];
+    NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:components];
+    [archivedData writeToFile:[self saveFilePath] atomically:YES];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
